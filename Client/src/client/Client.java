@@ -1,19 +1,15 @@
 package client;
 
-/**
- *
- * @author dzelazny
- */
 import java.net.*;
 import java.io.*;
 
 public class Client {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         String host = "localhost";
         int port = 0;
         try {
-            port = new Integer("997").intValue();
+            port = Integer.parseInt("997");
         } catch (NumberFormatException e) {
             System.out.println("Nieprawidłowy argument: port");
             System.exit(-1);
@@ -35,19 +31,16 @@ public class Client {
         System.out.println("Połączono z " + clientSocket);
 
         //Deklaracje zmiennych strumieniowych 
-        String line = null;
-        BufferedReader brSockInp = null;
-        BufferedReader brLocalInp = null;
-        DataOutputStream out = null;
+        String line = null; // Przechowuje linijkę tekstu od usera / serwera
+        BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BR
+        BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BR
+        DataOutputStream output = null; // Wysyłanie danych do serwera
 
         //Utworzenie strumieni
         try {
-            out = new DataOutputStream(clientSocket.getOutputStream());
-            brSockInp = new BufferedReader(
-                    new InputStreamReader(
-                            clientSocket.getInputStream()));
-            brLocalInp = new BufferedReader(
-                    new InputStreamReader(System.in));
+            output = new DataOutputStream(clientSocket.getOutputStream());
+            brSockInp = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            brLocalInp = new BufferedReader(new InputStreamReader(System.in)); //BR czyta w bajtach, a ISR konwertuje to na znaki
         } catch (IOException e) {
             System.out.println("Błąd przy tworzeniu strumieni: " + e);
             System.exit(-1);
@@ -58,8 +51,8 @@ public class Client {
                 line = brLocalInp.readLine();
                 if (line != null) {
                     System.out.println("Wysyłam: " + line);
-                    out.writeBytes(line + "\r");
-                    out.flush();
+                    output.writeBytes(line + "\r");
+                    output.flush(); // Przekazuje tekst do serwera
                 }
                 if ("quit".equals(line)) {
                     System.out.println("Kończenie pracy...");
@@ -68,7 +61,7 @@ public class Client {
                 }
                 try {
                     line = brSockInp.readLine();
-                    System.out.println("Otrzymano: " + line);
+                    System.out.println("Otrzymano: " + line);  // Otrzymuje z powrotem tekst z serwera
                 } catch (IOException e) {
                     System.out.println("Błąd wejścia-wyjścia: " + e);
                     System.exit(-1);
