@@ -45,6 +45,8 @@ public class Client {
             System.out.println("Błąd przy tworzeniu strumieni: " + e);
             System.exit(-1);
         }
+        System.out.println("Komendy do wyboru: zaloguj, rejestracja, lista, komendy");
+        System.out.println("Komendy po zalogowaniu: saldo, wplata, wyplata, przelew, komendy, wyloguj");
         //Pętla główna klienta
         while (true) {
             try {
