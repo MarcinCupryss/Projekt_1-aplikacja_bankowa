@@ -2,6 +2,7 @@ package client;
 
 import java.net.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Client {
 
@@ -14,7 +15,7 @@ public class Client {
             System.out.println("Nieprawidłowy argument: port");
             System.exit(-1);
         }
-        //Inicjalizacja gniazda klienckiego
+
         Socket clientSocket = null;
         try {
             clientSocket = new Socket(host, port);
@@ -30,40 +31,38 @@ public class Client {
         }
         System.out.println("Połączono z " + clientSocket);
 
-        //Deklaracje zmiennych strumieniowych 
         String line = null; // Przechowuje linijkę tekstu od usera / serwera
         BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BR
         BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BR
         DataOutputStream output = null; // Wysyłanie danych do serwera
 
-        //Utworzenie strumieni
         try {
             output = new DataOutputStream(clientSocket.getOutputStream());
-            brSockInp = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            brSockInp = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
             brLocalInp = new BufferedReader(new InputStreamReader(System.in)); //BR czyta w bajtach, a ISR konwertuje to na znaki
         } catch (IOException e) {
             System.out.println("Błąd przy tworzeniu strumieni: " + e);
             System.exit(-1);
         }
-        System.out.println("Komendy do wyboru: zaloguj, rejestracja, lista, komendy");
-        System.out.println("Komendy po zalogowaniu: saldo, wplata, wyplata, przelew, komendy, wyloguj");
-        //Pętla główna klienta
+        System.out.println("Komendy do wyboru: zaloguj, rejestracja, lista, komendy, zamknij");
+        System.out.println("Komendy po zalogowaniu: saldo, wplata, wyplata, przelew, komendy, wyloguj, zamknij");
+
         while (true) {
             try {
                 line = brLocalInp.readLine();
                 if (line != null) {
                     System.out.println("Wysyłam: " + line);
                     output.writeBytes(line + "\r");
-                    output.flush(); // Przekazuje tekst do serwera
+                    output.flush();
                 }
-                if ("quit".equals(line)) {
+                if ("zamknij".equals(line)) {
                     System.out.println("Kończenie pracy...");
                     clientSocket.close();
                     System.exit(0);
                 }
                 try {
                     line = brSockInp.readLine();
-                    System.out.println("Otrzymano: " + line);  // Otrzymuje z powrotem tekst z serwera
+                    System.out.println("Otrzymano: " + line);
                 } catch (IOException e) {
                     System.out.println("Błąd wejścia-wyjścia: " + e);
                     System.exit(-1);
