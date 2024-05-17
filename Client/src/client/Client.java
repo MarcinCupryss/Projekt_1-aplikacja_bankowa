@@ -48,8 +48,9 @@ public class Client {
             try {
                 line = brLocalInp.readLine();
                 if (line != null) {
+                    line = line.trim();
                     System.out.println("Wysyłam: " + line);
-                    writer.write(line + "\n");
+                    writer.write(line + System.lineSeparator());
                     writer.flush();
                 }
                 if ("zamknij".equals(line)) {
