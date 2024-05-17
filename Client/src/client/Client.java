@@ -1,20 +1,14 @@
 package client;
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class Client {
 
     public static void main(String[] args) {
         String host = "localhost";
-        int port = 0;
-        try {
-            port = Integer.parseInt("997");
-        } catch (NumberFormatException e) {
-            System.out.println("Nieprawidłowy argument: port");
-            System.exit(-1);
-        }
+        int port = 997;
 
         Socket clientSocket = null;
         try {
@@ -31,15 +25,18 @@ public class Client {
         }
         System.out.println("Połączono z " + clientSocket);
 
-        String line = null; // Przechowuje linijkę tekstu od usera / serwera
-        BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BR
-        BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BR
-        DataOutputStream output = null; // Wysyłanie danych do serwera
+        String line = null; // Przechowuje linijkę tekstu od użytkownika / serwera
+        BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BufferedReader
+        BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BufferedReader
+        BufferedWriter writer = null; // Wysyłanie danych do serwera
 
         try {
-            output = new DataOutputStream(clientSocket.getOutputStream());
+            OutputStream outputStream = clientSocket.getOutputStream();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+            writer = new BufferedWriter(outputStreamWriter);
+
             brSockInp = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-            brLocalInp = new BufferedReader(new InputStreamReader(System.in)); //BR czyta w bajtach, a ISR konwertuje to na znaki
+            brLocalInp = new BufferedReader(new InputStreamReader(System.in)); // BufferedReader czyta w bajtach, a InputStreamReader konwertuje to na znaki
         } catch (IOException e) {
             System.out.println("Błąd przy tworzeniu strumieni: " + e);
             System.exit(-1);
@@ -52,8 +49,8 @@ public class Client {
                 line = brLocalInp.readLine();
                 if (line != null) {
                     System.out.println("Wysyłam: " + line);
-                    output.writeBytes(line + "\r");
-                    output.flush();
+                    writer.write(line + "\n");
+                    writer.flush();
                 }
                 if ("zamknij".equals(line)) {
                     System.out.println("Kończenie pracy...");
@@ -61,8 +58,8 @@ public class Client {
                     System.exit(0);
                 }
                 try {
-                    line = brSockInp.readLine();
-                    System.out.println("Otrzymano: " + line);
+                    String receivedLine = brSockInp.readLine();
+                    System.out.println("Otrzymano: " + receivedLine);
                 } catch (IOException e) {
                     System.out.println("Błąd wejścia-wyjścia: " + e);
                     System.exit(-1);
