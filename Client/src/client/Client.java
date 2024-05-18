@@ -42,7 +42,7 @@ public class Client {
             System.exit(-1);
         }
         System.out.println("Komendy do wyboru: zaloguj, rejestracja, lista, komendy, zamknij");
-        System.out.println("Komendy po zalogowaniu: saldo, wplata, wyplata, przelew, komendy, wyloguj, zamknij");
+        System.out.println("Komendy po zalogowaniu: dane, saldo, wplata, wyplata, przelew, komendy, wyloguj, zamknij");
 
         while (true) {
             try {
