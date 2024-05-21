@@ -25,7 +25,7 @@ public class Client {
         }
         System.out.println("Połączono z " + clientSocket);
 
-        String line = null; // Przechowuje linijkę tekstu od użytkownika / serwera
+        String line = null;
         BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BufferedReader
         BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BufferedReader
         BufferedWriter writer = null; // Wysyłanie danych do serwera
@@ -41,8 +41,25 @@ public class Client {
             System.out.println("Błąd przy tworzeniu strumieni: " + e);
             System.exit(-1);
         }
-        System.out.println("Komendy do wyboru: zaloguj, rejestracja, lista, komendy, zamknij");
-        System.out.println("Komendy po zalogowaniu: dane, saldo, wplata, wyplata, przelew, komendy, wyloguj, zamknij");
+
+        System.out.println("""
+                \nKomendy w aplikacji dla użytkownika niezalogowanego:
+                - zaloguj (loguje na konto bankowe)
+                - rejestracja (pozwala na utworzenie nowego konta bankowego)
+                - lista (wyświetla listę loginów istniejących w bazie danych)
+                - komendy (wyświetla skróconą listę komend)
+                \nKomendy w aplikacji dla użytkownika zalogowanego:
+                - dane (wyświetla wszystkie dane zalogowanego użytkownika)
+                - saldo (wyświetla środki na koncie)
+                - wpłata (pozwala dodać środki na konto)
+                - wypłata (pozwala wypłacić środki z konta)
+                - przelew (pozwala wykonać przelew na inne konto bankowe)
+                - zmien login (zmiana loginu)
+                - zmien imie (zmiana imienia)
+                - zmien nazwisko (zmiana nazwiska)
+                - komendy (wyświetla skróconą listę komend)
+                - wyloguj (wylogowuje z konta)
+                """);
 
         while (true) {
             try {
