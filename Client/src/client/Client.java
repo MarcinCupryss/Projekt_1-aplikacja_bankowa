@@ -4,6 +4,12 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+/*
+Autorzy:
+Marcin Cupryś 89529
+Piotr Solecki 88349
+ */
+
 public class Client {
 
     public static void main(String[] args) {
@@ -28,7 +34,7 @@ public class Client {
         String line = null;
         BufferedReader brSockInp = null; // Przechowuje referencję tekstu z serwera do odczytania przez BufferedReader
         BufferedReader brLocalInp = null; // Przechowuje referencję tekstu użytkownika do odczytania przez BufferedReader
-        BufferedWriter writer = null; // Wysyłanie danych do serwera
+        BufferedWriter writer = null;
 
         try {
             OutputStream outputStream = clientSocket.getOutputStream();
