@@ -60,6 +60,9 @@ public class Client {
                 - wpłata (pozwala dodać środki na konto)
                 - wypłata (pozwala wypłacić środki z konta)
                 - przelew (pozwala wykonać przelew na inne konto bankowe)
+                - komendy (wyświetla skróconą listę komend)
+                - wyloguj (wylogowuje z konta)
+                \nKomendy w aplikacji dla admina:
                 - zmień login (zmiana loginu)
                 - zmień imię (zmiana imienia)
                 - zmień nazwisko (zmiana nazwiska)
